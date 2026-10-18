@@ -1,0 +1,6 @@
+schema_version: '1.0'
+status: rejected
+name: uc12_rejected
+source: manual_reference
+intent: 从 192.168.1.0/25 分配三个 /24。
+reason: /25 只有 128 个地址，不能包含三个各 256 地址的 /24；请扩大地址块（例如合适的 /22）或减小各部门子网需求。

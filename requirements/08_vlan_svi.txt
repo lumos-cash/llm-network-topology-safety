@@ -1,0 +1,1 @@
+本地PT，UC-05三层交换机版本。不使用路由器。3560-24PS Switch0启用三层路由，VLAN10名Finance，VLAN20名Marketing。PC0/1/2分别192.168.1.1/24、.2/24、.3/24，接Switch0 FastEthernet0/1、/2、/3并划入VLAN10；PC3/4/5分别192.168.2.1/24、.2/24、.3/24，接FastEthernet0/4、/5、/6并划入VLAN20。PC端口均FastEthernet0。SVI Vlan10=192.168.1.254/24，Vlan20=192.168.2.254/24，PC网关为各自子网.254。生成六台PC所有有向两两ping验收（共30项），全部预期成功。

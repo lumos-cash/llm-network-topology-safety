@@ -1,0 +1,1 @@
+本地PT实验6-6，PC-PT PC0 FastEthernet0直接接Server-PT Server0 FastEthernet0。PC0地址192.168.0.1/24，Server0地址192.168.0.2/24，无网关。Server0在GUI开启HTTP服务。要求PC0 ping Server0成功；网页访问和HTTP/TCP报文观察另行人工记录，不能用ping替代。

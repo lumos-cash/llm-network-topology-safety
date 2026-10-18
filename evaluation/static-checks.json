@@ -1,0 +1,45 @@
+{
+  "source": "artificial_offline_counterexamples",
+  "pt_executed": false,
+  "audit_directory": "20261014T140431Z-static-counterexamples-09192bce",
+  "results": [
+    {
+      "case": "unknown_field",
+      "expected_code": "schema",
+      "blocked_as_expected": true
+    },
+    {
+      "case": "numeric_model",
+      "expected_code": "schema",
+      "blocked_as_expected": true
+    },
+    {
+      "case": "duplicate_address",
+      "expected_code": "duplicate_ip",
+      "blocked_as_expected": true
+    },
+    {
+      "case": "wrong_gateway",
+      "expected_code": "gateway",
+      "blocked_as_expected": true
+    },
+    {
+      "case": "undefined_vlan",
+      "expected_code": "vlan_reference",
+      "blocked_as_expected": true
+    },
+    {
+      "case": "area_mismatch",
+      "expected_code": "ospf_area",
+      "blocked_as_expected": true
+    },
+    {
+      "case": "blacklist_reload",
+      "blocked_as_expected": true
+    },
+    {
+      "case": "unknown_command",
+      "blocked_as_expected": true
+    }
+  ]
+}

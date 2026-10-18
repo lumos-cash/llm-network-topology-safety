@@ -1,0 +1,11 @@
+.env
+.env.local
+.venv/
+.vendor/
+__pycache__/
+.pytest_cache/
+*.pyc
+tmp/
+runs/
+private/
+test-results.xml

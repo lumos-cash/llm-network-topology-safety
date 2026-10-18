@@ -1,0 +1,36 @@
+schema_version: '1.0'
+status: ready
+name: lab6_6_http
+source: manual_reference
+intent: 实验6-6：PC0 与 HTTP 服务器直连；GUI 开启 HTTP 并另行观察 HTTP/TCP，ping 仅验证连通性。
+devices:
+- name: PC0
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.0.1/24
+- name: Server0
+  kind: server
+  model: Server-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.0.2/24
+  services:
+  - http
+links:
+- a:
+    device: PC0
+    interface: FastEthernet0
+  b:
+    device: Server0
+    interface: FastEthernet0
+  medium: copper
+checks:
+- id: http_server_reachable
+  type: ping
+  device: PC0
+  target: 192.168.0.2
+  expected: true

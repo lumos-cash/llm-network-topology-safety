@@ -1,0 +1,71 @@
+{
+  "cases": [
+    {
+      "id": "01_ripv2",
+      "requirement": "requirements/01_ripv2.txt",
+      "reference": "examples/lab4_10_ripv2.yaml",
+      "course_lab": "4-10"
+    },
+    {
+      "id": "02_ospf",
+      "requirement": "requirements/02_ospf.txt",
+      "reference": "examples/lab4_11_ospf.yaml",
+      "course_lab": "4-11"
+    },
+    {
+      "id": "03_lan",
+      "requirement": "requirements/03_lan.txt",
+      "reference": "examples/uc06_lan.yaml",
+      "course_lab": null
+    },
+    {
+      "id": "04_vlsm",
+      "requirement": "requirements/04_vlsm.txt",
+      "reference": "examples/lab4_5_vlsm.yaml",
+      "course_lab": "4-5"
+    },
+    {
+      "id": "05_acl",
+      "requirement": "requirements/05_acl.txt",
+      "reference": "examples/lab7_1_acl.yaml",
+      "course_lab": "7-1"
+    },
+    {
+      "id": "06_http",
+      "requirement": "requirements/06_http.txt",
+      "reference": "examples/lab6_6_http.yaml",
+      "course_lab": "6-6"
+    },
+    {
+      "id": "07_vlan_router",
+      "requirement": "requirements/07_vlan_router.txt",
+      "reference": "examples/uc05_router_on_stick.yaml",
+      "course_lab": null
+    },
+    {
+      "id": "08_vlan_svi",
+      "requirement": "requirements/08_vlan_svi.txt",
+      "reference": "examples/uc05_svi.yaml",
+      "course_lab": null
+    },
+    {
+      "id": "09_ripv1",
+      "requirement": "requirements/09_ripv1.txt",
+      "reference": "examples/lab4_10_ripv1.yaml",
+      "course_lab": "4-10"
+    },
+    {
+      "id": "10_clarification",
+      "requirement": "requirements/10_clarification.txt",
+      "reference": "examples/uc11_clarification.yaml",
+      "course_lab": null
+    },
+    {
+      "id": "11_impossible",
+      "requirement": "requirements/11_impossible.txt",
+      "reference": "examples/uc12_rejected.yaml",
+      "course_lab": null
+    }
+  ],
+  "note": "人工编写输入和独立基准；登记用例不代表实测完成"
+}

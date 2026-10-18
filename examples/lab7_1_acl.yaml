@@ -1,0 +1,197 @@
+schema_version: '1.0'
+status: ready
+name: lab7_1_acl
+source: manual_reference
+intent: 实验7-1：扩展 ACL 阻断指定 HTTP/FTP/主机/ICMP；当前机器可读检查仅覆盖 ICMP，HTTP/FTP 需 GUI 留证，不能仅凭
+  ping 宣称业务全部通过。
+devices:
+- name: Router0
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 192.168.0.254/24
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 10.0.0.1/30
+  static_routes:
+  - prefix: 192.168.1.0/24
+    next_hop: 10.0.0.2
+- name: Router1
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 192.168.1.254/24
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 10.0.0.2/30
+  static_routes:
+  - prefix: 192.168.0.0/24
+    next_hop: 10.0.0.1
+  acls:
+  - number: 100
+    rules:
+    - action: deny
+      protocol: tcp
+      source: 192.168.0.0/24
+      destination: 192.168.1.2/32
+      destination_port: 80
+    - action: deny
+      protocol: tcp
+      source: 192.168.0.1/32
+      destination: 192.168.1.2/32
+      destination_port: 20
+    - action: deny
+      protocol: tcp
+      source: 192.168.0.1/32
+      destination: 192.168.1.2/32
+      destination_port: 21
+    - action: deny
+      protocol: ip
+      source: 192.168.0.2/32
+      destination: 192.168.1.1/32
+    - action: deny
+      protocol: icmp
+      source: 192.168.0.0/24
+      destination: 10.0.0.2/32
+    - action: permit
+      protocol: ip
+      source: any
+      destination: any
+    interface: GigabitEthernet0/1
+    direction: in
+- name: Switch0
+  kind: switch
+  model: 2960-24TT
+  vlans:
+  - id: 1
+    name: default
+  interfaces:
+  - name: FastEthernet0/1
+    mode: access
+    vlan: 1
+  - name: FastEthernet0/2
+    mode: access
+    vlan: 1
+  - name: FastEthernet0/3
+    mode: access
+    vlan: 1
+- name: Switch1
+  kind: switch
+  model: 2960-24TT
+  vlans:
+  - id: 1
+    name: default
+  interfaces:
+  - name: FastEthernet0/1
+    mode: access
+    vlan: 1
+  - name: FastEthernet0/2
+    mode: access
+    vlan: 1
+  - name: FastEthernet0/3
+    mode: access
+    vlan: 1
+- name: PC0
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.0.1/24
+  gateway: 192.168.0.254
+- name: PC1
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.0.2/24
+  gateway: 192.168.0.254
+- name: PC2
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.1.1/24
+  gateway: 192.168.1.254
+- name: Server0
+  kind: server
+  model: Server-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.1.2/24
+  gateway: 192.168.1.254
+  services:
+  - http
+links:
+- a:
+    device: Router0
+    interface: GigabitEthernet0/1
+  b:
+    device: Router1
+    interface: GigabitEthernet0/1
+  medium: copper
+- a:
+    device: Router0
+    interface: GigabitEthernet0/0
+  b:
+    device: Switch0
+    interface: FastEthernet0/3
+  medium: copper
+- a:
+    device: Router1
+    interface: GigabitEthernet0/0
+  b:
+    device: Switch1
+    interface: FastEthernet0/3
+  medium: copper
+- a:
+    device: PC0
+    interface: FastEthernet0
+  b:
+    device: Switch0
+    interface: FastEthernet0/1
+  medium: copper
+- a:
+    device: PC1
+    interface: FastEthernet0
+  b:
+    device: Switch0
+    interface: FastEthernet0/2
+  medium: copper
+- a:
+    device: PC2
+    interface: FastEthernet0
+  b:
+    device: Switch1
+    interface: FastEthernet0/1
+  medium: copper
+- a:
+    device: Server0
+    interface: FastEthernet0
+  b:
+    device: Switch1
+    interface: FastEthernet0/2
+  medium: copper
+checks:
+- id: pc1_pc2_denied
+  type: ping
+  device: PC1
+  target: 192.168.1.1
+  expected: false
+- id: pc0_r1_denied
+  type: ping
+  device: PC0
+  target: 10.0.0.2
+  expected: false
+- id: pc0_pc2_allowed
+  type: ping
+  device: PC0
+  target: 192.168.1.1
+  expected: true

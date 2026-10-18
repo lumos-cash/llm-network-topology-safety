@@ -1,0 +1,155 @@
+schema_version: '1.0'
+status: ready
+name: lab4_11_ospf
+source: manual_reference
+intent: 课件人工基线；比较 RIP 版本或 OSPF 选路。尚未在 PT 实测。
+devices:
+- name: Router0
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 192.168.16.126/25
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 10.0.0.1/30
+  - name: Serial0/0/0
+    mode: routed
+    ipv4: 30.0.0.1/30
+    clock_rate: 64000
+  routing:
+    ospf:
+      process_id: 100
+      networks:
+      - prefix: 192.168.16.0/25
+        area: 0
+      - prefix: 10.0.0.0/30
+        area: 0
+      - prefix: 30.0.0.0/30
+        area: 0
+- name: Router1
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 192.168.16.190/26
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 20.0.0.1/30
+  - name: Serial0/0/0
+    mode: routed
+    ipv4: 30.0.0.2/30
+  routing:
+    ospf:
+      process_id: 100
+      networks:
+      - prefix: 192.168.16.128/26
+        area: 0
+      - prefix: 20.0.0.0/30
+        area: 0
+      - prefix: 30.0.0.0/30
+        area: 0
+- name: Router2
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 10.0.0.2/30
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 20.0.0.2/30
+  routing:
+    ospf:
+      process_id: 100
+      networks:
+      - prefix: 10.0.0.0/30
+        area: 0
+      - prefix: 20.0.0.0/30
+        area: 0
+- name: PC0
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.16.1/25
+  gateway: 192.168.16.126
+- name: PC1
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.16.129/26
+  gateway: 192.168.16.190
+links:
+- a:
+    device: PC0
+    interface: FastEthernet0
+  b:
+    device: Router0
+    interface: GigabitEthernet0/0
+  medium: copper
+- a:
+    device: PC1
+    interface: FastEthernet0
+  b:
+    device: Router1
+    interface: GigabitEthernet0/0
+  medium: copper
+- a:
+    device: Router0
+    interface: GigabitEthernet0/1
+  b:
+    device: Router2
+    interface: GigabitEthernet0/0
+  medium: copper
+- a:
+    device: Router1
+    interface: GigabitEthernet0/1
+  b:
+    device: Router2
+    interface: GigabitEthernet0/1
+  medium: copper
+- a:
+    device: Router0
+    interface: Serial0/0/0
+  b:
+    device: Router1
+    interface: Serial0/0/0
+  medium: serial
+checks:
+- id: pc0_pc1
+  type: ping
+  device: PC0
+  target: 192.168.16.129
+  expected: true
+- id: pc1_pc0
+  type: ping
+  device: PC1
+  target: 192.168.16.1
+  expected: true
+- id: remote_route
+  type: route
+  device: Router0
+  prefix: 192.168.16.128/26
+  protocol: O
+- id: least_cost_path
+  type: trace
+  device: PC0
+  target: 192.168.16.129
+  via:
+  - 192.168.16.126
+  - 10.0.0.2
+  - 20.0.0.1
+- id: ecmp_route
+  type: route
+  device: Router2
+  prefix: 30.0.0.0/30
+  protocol: O
+  next_hops:
+  - 10.0.0.1
+  - 20.0.0.1

@@ -1,0 +1,59 @@
+schema_version: '1.0'
+status: ready
+name: uc06_lan
+source: manual_reference
+intent: 两台 PC 通过交换机连接，同一 /24 网络互通，不使用路由器。
+devices:
+- name: Switch0
+  kind: switch
+  model: 2960-24TT
+  vlans:
+  - id: 10
+    name: LAN
+  interfaces:
+  - name: FastEthernet0/1
+    mode: access
+    vlan: 10
+  - name: FastEthernet0/2
+    mode: access
+    vlan: 10
+- name: PC0
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.1.1/24
+- name: PC1
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.1.2/24
+links:
+- a:
+    device: PC0
+    interface: FastEthernet0
+  b:
+    device: Switch0
+    interface: FastEthernet0/1
+  medium: copper
+- a:
+    device: PC1
+    interface: FastEthernet0
+  b:
+    device: Switch0
+    interface: FastEthernet0/2
+  medium: copper
+checks:
+- id: pc0_pc1
+  type: ping
+  device: PC0
+  target: 192.168.1.2
+  expected: true
+- id: pc1_pc0
+  type: ping
+  device: PC1
+  target: 192.168.1.1
+  expected: true

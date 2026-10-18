@@ -1,0 +1,179 @@
+schema_version: '1.0'
+status: ready
+name: ripv2_vlsm_triangle
+source: model_generated
+intent: 三台 2911 路由器组成三角拓扑，Router0/Router1 各自承载一个 VLSM 局域网（192.168.16.0/25 与 192.168.16.128/26），运行
+  RIPv2 并关闭自动汇总，验证两台 PC 双向互通以及 Router0 学习到的远端 LAN RIP 路由。
+assumptions:
+- 两台 PC 直接连接所属路由器的 GigabitEthernet0/0，未串接接入交换机。
+- Router0 与 Router1 需安装串口模块（如 HWIC-2T）以获得 Serial0/0/0 接口；Router0 串口为 DCE，clock rate
+  64000。
+- RIP 的 network 语句在设备上按有类网络书写，本 DSL 用接口实际 CIDR 前缀表达同一意图。
+- 两个 LAN 掩码不同且同属 192.168.16.0 空间，必须关闭自动汇总（RIPv2 no auto-summary）才能正确传播 /25 与 /26，否则会出现汇总黑洞。
+- 首次 ping 可能因 ARP 解析丢失首个报文，该记录保留，预热后重测，验收以预热后 100% 成功为准。
+- PC 的 IP 地址、子网掩码和默认网关均通过 Packet Tracer GUI 配置，不下发任何 CLI 命令。
+devices:
+- name: Router0
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 192.168.16.126/25
+    enabled: true
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 10.0.0.1/30
+    enabled: true
+  - name: Serial0/0/0
+    mode: routed
+    ipv4: 30.0.0.1/30
+    enabled: true
+    clock_rate: 64000
+  routing:
+    rip:
+      version: 2
+      auto_summary: false
+      networks:
+      - 192.168.16.0/25
+      - 10.0.0.0/30
+      - 30.0.0.0/30
+- name: Router1
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 192.168.16.190/26
+    enabled: true
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 20.0.0.1/30
+    enabled: true
+  - name: Serial0/0/0
+    mode: routed
+    ipv4: 30.0.0.2/30
+    enabled: true
+  routing:
+    rip:
+      version: 2
+      auto_summary: false
+      networks:
+      - 192.168.16.128/26
+      - 20.0.0.0/30
+      - 30.0.0.0/30
+- name: Router2
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 10.0.0.2/30
+    enabled: true
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 20.0.0.2/30
+    enabled: true
+  routing:
+    rip:
+      version: 2
+      auto_summary: false
+      networks:
+      - 10.0.0.0/30
+      - 20.0.0.0/30
+- name: PC0
+  kind: pc
+  model: PC-PT
+  gateway: 192.168.16.126
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.16.1/25
+    enabled: true
+- name: PC1
+  kind: pc
+  model: PC-PT
+  gateway: 192.168.16.190
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.16.129/26
+    enabled: true
+links:
+- a:
+    device: PC0
+    interface: FastEthernet0
+  b:
+    device: Router0
+    interface: GigabitEthernet0/0
+  medium: copper
+- a:
+    device: PC1
+    interface: FastEthernet0
+  b:
+    device: Router1
+    interface: GigabitEthernet0/0
+  medium: copper
+- a:
+    device: Router0
+    interface: GigabitEthernet0/1
+  b:
+    device: Router2
+    interface: GigabitEthernet0/0
+  medium: copper
+- a:
+    device: Router2
+    interface: GigabitEthernet0/1
+  b:
+    device: Router1
+    interface: GigabitEthernet0/1
+  medium: copper
+- a:
+    device: Router0
+    interface: Serial0/0/0
+  b:
+    device: Router1
+    interface: Serial0/0/0
+  medium: serial
+checks:
+- id: pc0_ping_pc1
+  type: ping
+  device: PC0
+  target: 192.168.16.129
+  expected: true
+  min_success_percent: 100
+- id: pc1_ping_pc0
+  type: ping
+  device: PC1
+  target: 192.168.16.1
+  expected: true
+  min_success_percent: 100
+- id: pc0_trace_pc1
+  type: trace
+  device: PC0
+  target: 192.168.16.129
+  via:
+  - 192.168.16.126
+  - 30.0.0.2
+  - 192.168.16.190
+- id: r0_route_remote_lan
+  type: route
+  device: Router0
+  prefix: 192.168.16.128/26
+  protocol: R
+  next_hops:
+  - 30.0.0.2
+- id: r0_route_link_20
+  type: route
+  device: Router0
+  prefix: 20.0.0.0/30
+  protocol: R
+  next_hops:
+  - 10.0.0.2
+- id: r1_route_pc0_lan
+  type: route
+  device: Router1
+  prefix: 192.168.16.0/25
+  protocol: R
+  next_hops:
+  - 30.0.0.1

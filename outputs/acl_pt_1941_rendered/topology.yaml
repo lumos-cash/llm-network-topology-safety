@@ -1,0 +1,231 @@
+schema_version: '1.0'
+status: ready
+name: lab07_1_static_acl
+source: model_generated
+intent: Packet Tracer 实验 7-1：两台 1941 路由器通过 G0/1 以 10.0.0.1/30 与 10.0.0.2/30 直连，各自以
+  G0/0 连接 2960-24TT 交换机承载 192.168.0.0/24 与 192.168.1.0/24 两个 LAN；两端配置到对端 LAN 的静态路由，并在
+  Router1 G0/1 入方向应用扩展 ACL 100，按序实现多条访问控制。
+assumptions:
+- 两个交换机所有端口均属默认 VLAN 1（名称 default），全部为 access 模式。
+- IP 地址、网关按需求给定值配置，主机与服务器地址均由 GUI 静态配置，不在本文件中生成任何 CLI。
+- ACL 100 为扩展访问控制列表，方向为 Router1 GigabitEthernet0/1 的 inbound，规则顺序与需求描述一致，最后一条为 permit
+  ip any any。
+- 静态路由为两条指向对端 LAN 网段的直连下一跳路由，管理距离使用默认值。
+- Server0 已启用 HTTP 服务；HTTP 与 FTP 的业务可用性需通过 GUI 客户端另行验证，ping 结果不作为业务验证结论。
+devices:
+- name: Router0
+  kind: router
+  model: '1941'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 192.168.0.254/24
+    enabled: true
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 10.0.0.1/30
+    enabled: true
+  static_routes:
+  - prefix: 192.168.1.0/24
+    next_hop: 10.0.0.2
+- name: Router1
+  kind: router
+  model: '1941'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 192.168.1.254/24
+    enabled: true
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 10.0.0.2/30
+    enabled: true
+  static_routes:
+  - prefix: 192.168.0.0/24
+    next_hop: 10.0.0.1
+  acls:
+  - number: 100
+    interface: GigabitEthernet0/1
+    direction: in
+    rules:
+    - action: deny
+      protocol: tcp
+      source: 192.168.0.0/24
+      destination: 192.168.1.2/32
+      destination_port: 80
+    - action: deny
+      protocol: tcp
+      source: 192.168.0.1/32
+      destination: 192.168.1.2/32
+      destination_port: 20
+    - action: deny
+      protocol: tcp
+      source: 192.168.0.1/32
+      destination: 192.168.1.2/32
+      destination_port: 21
+    - action: deny
+      protocol: ip
+      source: 192.168.0.2/32
+      destination: 192.168.1.1/32
+    - action: deny
+      protocol: icmp
+      source: 192.168.0.0/24
+      destination: 10.0.0.2/32
+    - action: permit
+      protocol: ip
+      source: any
+      destination: any
+- name: Switch0
+  kind: switch
+  model: 2960-24TT
+  vlans:
+  - id: 1
+    name: default
+  interfaces:
+  - name: FastEthernet0/1
+    mode: access
+    vlan: 1
+  - name: FastEthernet0/2
+    mode: access
+    vlan: 1
+  - name: FastEthernet0/3
+    mode: access
+    vlan: 1
+- name: Switch1
+  kind: switch
+  model: 2960-24TT
+  vlans:
+  - id: 1
+    name: default
+  interfaces:
+  - name: FastEthernet0/1
+    mode: access
+    vlan: 1
+  - name: FastEthernet0/2
+    mode: access
+    vlan: 1
+  - name: FastEthernet0/3
+    mode: access
+    vlan: 1
+- name: PC0
+  kind: pc
+  model: PC-PT
+  gateway: 192.168.0.254
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.0.1/24
+- name: PC1
+  kind: pc
+  model: PC-PT
+  gateway: 192.168.0.254
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.0.2/24
+- name: PC2
+  kind: pc
+  model: PC-PT
+  gateway: 192.168.1.254
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.1.1/24
+- name: Server0
+  kind: server
+  model: Server-PT
+  gateway: 192.168.1.254
+  services:
+  - http
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 192.168.1.2/24
+links:
+- a:
+    device: Router0
+    interface: GigabitEthernet0/1
+  b:
+    device: Router1
+    interface: GigabitEthernet0/1
+  medium: copper
+- a:
+    device: Router0
+    interface: GigabitEthernet0/0
+  b:
+    device: Switch0
+    interface: FastEthernet0/1
+  medium: copper
+- a:
+    device: Router1
+    interface: GigabitEthernet0/0
+  b:
+    device: Switch1
+    interface: FastEthernet0/1
+  medium: copper
+- a:
+    device: PC0
+    interface: FastEthernet0
+  b:
+    device: Switch0
+    interface: FastEthernet0/2
+  medium: copper
+- a:
+    device: PC1
+    interface: FastEthernet0
+  b:
+    device: Switch0
+    interface: FastEthernet0/3
+  medium: copper
+- a:
+    device: PC2
+    interface: FastEthernet0
+  b:
+    device: Switch1
+    interface: FastEthernet0/2
+  medium: copper
+- a:
+    device: Server0
+    interface: FastEthernet0
+  b:
+    device: Switch1
+    interface: FastEthernet0/3
+  medium: copper
+checks:
+- id: pc1_pc2_denied
+  type: ping
+  device: PC1
+  target: 192.168.1.1
+  expected: false
+- id: pc0_r1_denied
+  type: ping
+  device: PC0
+  target: 10.0.0.2
+  expected: false
+- id: pc0_pc2_allowed
+  type: ping
+  device: PC0
+  target: 192.168.1.1
+  expected: true
+  min_success_percent: 100
+- id: pc0_pc2_path
+  type: trace
+  device: PC0
+  target: 192.168.1.1
+  via:
+  - 192.168.0.254
+  - 10.0.0.2
+- id: r0_static_to_r1_lan
+  type: route
+  device: Router0
+  prefix: 192.168.1.0/24
+  protocol: S
+  next_hops:
+  - 10.0.0.2
+- id: r1_static_to_r0_lan
+  type: route
+  device: Router1
+  prefix: 192.168.0.0/24
+  protocol: S
+  next_hops:
+  - 10.0.0.1

@@ -1,0 +1,928 @@
+{
+  "notes": [
+    "生成阶段记录，不代表PT实测；首次失败不能由重试覆盖。",
+    "不同prompt_sha256为不同提示词版本；不可将调参样例和独立评估混成一个无说明的通过率。",
+    "首次结构/语义检查通过不等于首次满足全部需求；intent_match为空表示未作独立比对。",
+    "澄清/拒绝样例单列；不进入部署成功率。"
+  ],
+  "metrics": {
+    "first_topology_correct_by_prompt_version": [
+      {
+        "prompt_context_sha256": "f52439c69e352fe46e2b96efa8fa8d6174e8b3c401763821f5e8bbd3bfc4679d",
+        "cases": [
+          "01_ripv2",
+          "02_ospf",
+          "03_lan"
+        ],
+        "correct": 0,
+        "evaluated": 3,
+        "rate": 0.0
+      },
+      {
+        "prompt_context_sha256": "0630b17e2f2ae590b967dc489f034570b0a3516d0ebf3235365a0830a780c31b",
+        "cases": [
+          "04_vlsm",
+          "05_acl",
+          "06_http"
+        ],
+        "correct": 2,
+        "evaluated": 3,
+        "rate": 0.6666666666666666
+      },
+      {
+        "prompt_context_sha256": "9d1778b784388f94ad92e8c1ebebff7979745e361cc746d7e0a1b140c35232b5",
+        "cases": [
+          "07_vlan_router",
+          "08_vlan_svi",
+          "09_ripv1"
+        ],
+        "correct": 2,
+        "evaluated": 3,
+        "rate": 0.6666666666666666
+      }
+    ],
+    "config_first_pass_rate": null,
+    "fault_repair_mean_rounds": null,
+    "pt_deployed_cases": 0,
+    "fault_trials": 0,
+    "note": "当前为提示词调试期间观察数据，非冻结提示词的独立测试；PT指标未测，不能填0%或100%。"
+  },
+  "cases": [
+    {
+      "case": "01_ripv2",
+      "course_lab": "4-10",
+      "attempts": 3,
+      "expected_status": "ready",
+      "first_run": "20261014T075558Z-generate-aaae04ff",
+      "first_topology_correct": false,
+      "first_validation_pass": false,
+      "latest_model_run": "20261014T080028Z-generate-f1114202",
+      "provider_failures": 1,
+      "final_intent_match": true,
+      "latest_current_validation_pass": false,
+      "content_review": null,
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "02_ospf",
+      "course_lab": "4-11",
+      "attempts": 3,
+      "expected_status": "ready",
+      "first_run": "20261014T075658Z-generate-37228e8f",
+      "first_topology_correct": false,
+      "first_validation_pass": false,
+      "latest_model_run": "20261014T080558Z-generate-db16e740",
+      "provider_failures": 0,
+      "final_intent_match": true,
+      "latest_current_validation_pass": true,
+      "content_review": null,
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "03_lan",
+      "course_lab": null,
+      "attempts": 2,
+      "expected_status": "ready",
+      "first_run": "20261014T075742Z-generate-3e3e5288",
+      "first_topology_correct": false,
+      "first_validation_pass": false,
+      "latest_model_run": "20261014T080225Z-generate-6c00f4c6",
+      "provider_failures": 0,
+      "final_intent_match": true,
+      "latest_current_validation_pass": true,
+      "content_review": null,
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "04_vlsm",
+      "course_lab": "4-5",
+      "attempts": 1,
+      "expected_status": "ready",
+      "first_run": "20261014T081332Z-generate-f376e7e9",
+      "first_topology_correct": true,
+      "first_validation_pass": true,
+      "latest_model_run": "20261014T081332Z-generate-f376e7e9",
+      "provider_failures": 0,
+      "final_intent_match": true,
+      "latest_current_validation_pass": true,
+      "content_review": null,
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "05_acl",
+      "course_lab": "7-1",
+      "attempts": 2,
+      "expected_status": "ready",
+      "first_run": "20261014T081334Z-generate-f93787cb",
+      "first_topology_correct": false,
+      "first_validation_pass": false,
+      "latest_model_run": "20261015T004007Z-generate-ab3c8635",
+      "provider_failures": 0,
+      "final_intent_match": true,
+      "latest_current_validation_pass": true,
+      "content_review": null,
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "06_http",
+      "course_lab": "6-6",
+      "attempts": 1,
+      "expected_status": "ready",
+      "first_run": "20261014T081332Z-generate-27cdc303",
+      "first_topology_correct": true,
+      "first_validation_pass": true,
+      "latest_model_run": "20261014T081332Z-generate-27cdc303",
+      "provider_failures": 0,
+      "final_intent_match": true,
+      "latest_current_validation_pass": true,
+      "content_review": null,
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "07_vlan_router",
+      "course_lab": null,
+      "attempts": 1,
+      "expected_status": "ready",
+      "first_run": "20261015T003809Z-generate-d341dc1b",
+      "first_topology_correct": true,
+      "first_validation_pass": true,
+      "latest_model_run": "20261015T003809Z-generate-d341dc1b",
+      "provider_failures": 0,
+      "final_intent_match": true,
+      "latest_current_validation_pass": true,
+      "content_review": null,
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "08_vlan_svi",
+      "course_lab": null,
+      "attempts": 1,
+      "expected_status": "ready",
+      "first_run": "20261015T003838Z-generate-74a0afd1",
+      "first_topology_correct": true,
+      "first_validation_pass": true,
+      "latest_model_run": "20261015T003838Z-generate-74a0afd1",
+      "provider_failures": 0,
+      "final_intent_match": true,
+      "latest_current_validation_pass": true,
+      "content_review": null,
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "09_ripv1",
+      "course_lab": "4-10",
+      "attempts": 2,
+      "expected_status": "ready",
+      "first_run": "20261015T003838Z-generate-8d79606a",
+      "first_topology_correct": false,
+      "first_validation_pass": false,
+      "latest_model_run": "20261015T003838Z-generate-8d79606a",
+      "provider_failures": 1,
+      "final_intent_match": null,
+      "latest_current_validation_pass": null,
+      "content_review": null,
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "10_clarification",
+      "course_lab": null,
+      "attempts": 1,
+      "expected_status": "needs_clarification",
+      "first_run": "20261015T004007Z-generate-8071c273",
+      "first_topology_correct": true,
+      "first_validation_pass": true,
+      "latest_model_run": "20261015T004007Z-generate-8071c273",
+      "provider_failures": 0,
+      "final_intent_match": true,
+      "latest_current_validation_pass": true,
+      "content_review": {
+        "run": "20261015T004007Z-generate-8071c273",
+        "status_correct": true,
+        "content_correct": true,
+        "notes": "询问部门规模、地址、安全访问方向、出口仿真方式和设备选型，没有生成待部署配置。部分问题超出当前支持范围，后续回答仍须能力边界检查。"
+      },
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    },
+    {
+      "case": "11_impossible",
+      "course_lab": null,
+      "attempts": 1,
+      "expected_status": "rejected",
+      "first_run": "20261015T004008Z-generate-00b606f5",
+      "first_topology_correct": true,
+      "first_validation_pass": true,
+      "latest_model_run": "20261015T004008Z-generate-00b606f5",
+      "provider_failures": 0,
+      "final_intent_match": true,
+      "latest_current_validation_pass": true,
+      "content_review": {
+        "run": "20261015T004008Z-generate-00b606f5",
+        "status_correct": true,
+        "content_correct": false,
+        "notes": "拒绝理由正确，但替代建议2错误：/23只有512地址，不能容纳3个/24所需的768地址；192.168.1.0/23也不是规范网络边界。若保持三个/24，至少需要对齐的/22，例如192.168.0.0/22。建议1和3改变了原需求的部门子网大小，必须明确由用户选择。原始响应未修改。"
+      },
+      "pt_deployment": "not_run",
+      "config_first_pass": null,
+      "fault_repair_rounds": null
+    }
+  ],
+  "attempts": [
+    {
+      "run": "20261014T075558Z-generate-aaae04ff",
+      "case": "01_ripv2",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3783,
+        "completion_tokens": 6299,
+        "total_tokens": 10082,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 4606
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3783
+      },
+      "prompt_sha256": "feca8bf3192c983f3e65f977589b4c4df99b3321e0159b0884bdf16a14160cc3",
+      "prompt_context_sha256": "f52439c69e352fe46e2b96efa8fa8d6174e8b3c401763821f5e8bbd3bfc4679d",
+      "validation_pass": false,
+      "intent_match": null,
+      "current_validation": {
+        "valid": false,
+        "deployable": false,
+        "errors": [
+          {
+            "code": "schema",
+            "path": "checks/0",
+            "message": "{'id': 'pc0_ping_pc1', 'type': 'ping', 'device': 'PC0', 'target': '192.168.16.129', 'expected': True, 'min_success_percent': 60} is not valid under any of the given schemas"
+          },
+          {
+            "code": "schema",
+            "path": "checks/1",
+            "message": "{'id': 'pc1_ping_pc0', 'type': 'ping', 'device': 'PC1', 'target': '192.168.16.1', 'expected': True, 'min_success_percent': 60} is not valid under any of the given schemas"
+          },
+          {
+            "code": "schema",
+            "path": "checks/2",
+            "message": "{'id': 'r0_ping_pc1', 'type': 'ping', 'device': 'Router0', 'target': '192.168.16.129', 'expected': True, 'min_success_percent': 60} is not valid under any of the given schemas"
+          },
+          {
+            "code": "schema",
+            "path": "",
+            "message": "Additional properties are not allowed ('routing' was unexpected)"
+          }
+        ],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T075558Z-generate-aaae04ff\\model-output.yaml"
+    },
+    {
+      "run": "20261014T075658Z-generate-37228e8f",
+      "case": "02_ospf",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3852,
+        "completion_tokens": 5788,
+        "total_tokens": 9640,
+        "prompt_tokens_details": {
+          "cached_tokens": 3712
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 3973
+        },
+        "prompt_cache_hit_tokens": 3712,
+        "prompt_cache_miss_tokens": 140
+      },
+      "prompt_sha256": "feca8bf3192c983f3e65f977589b4c4df99b3321e0159b0884bdf16a14160cc3",
+      "prompt_context_sha256": "f52439c69e352fe46e2b96efa8fa8d6174e8b3c401763821f5e8bbd3bfc4679d",
+      "validation_pass": false,
+      "intent_match": null,
+      "current_validation": {
+        "valid": false,
+        "deployable": false,
+        "errors": [
+          {
+            "code": "schema",
+            "path": "checks/0",
+            "message": "{'id': 'chk_ping_pc0_pc1', 'type': 'ping', 'device': 'PC0', 'target': '192.168.16.129', 'expected': True, 'min_success_percent': 80} is not valid under any of the given schemas"
+          },
+          {
+            "code": "schema",
+            "path": "checks/1",
+            "message": "{'id': 'chk_ping_pc1_pc0', 'type': 'ping', 'device': 'PC1', 'target': '192.168.16.1', 'expected': True, 'min_success_percent': 80} is not valid under any of the given schemas"
+          },
+          {
+            "code": "schema",
+            "path": "",
+            "message": "Additional properties are not allowed ('acls', 'routing', 'services', 'static_routes', 'vlans' were unexpected)"
+          }
+        ],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T075658Z-generate-37228e8f\\model-output.yaml"
+    },
+    {
+      "run": "20261014T075742Z-generate-3e3e5288",
+      "case": "03_lan",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3641,
+        "completion_tokens": 1707,
+        "total_tokens": 5348,
+        "prompt_tokens_details": {
+          "cached_tokens": 3328
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 858
+        },
+        "prompt_cache_hit_tokens": 3328,
+        "prompt_cache_miss_tokens": 313
+      },
+      "prompt_sha256": "feca8bf3192c983f3e65f977589b4c4df99b3321e0159b0884bdf16a14160cc3",
+      "prompt_context_sha256": "f52439c69e352fe46e2b96efa8fa8d6174e8b3c401763821f5e8bbd3bfc4679d",
+      "validation_pass": false,
+      "intent_match": null,
+      "current_validation": {
+        "valid": false,
+        "deployable": false,
+        "errors": [
+          {
+            "code": "schema",
+            "path": "checks/0",
+            "message": "{'id': 'pc0_ping_pc1', 'type': 'ping', 'device': 'PC0', 'target': '192.168.1.2', 'expected': True, 'min_success_percent': 80} is not valid under any of the given schemas"
+          },
+          {
+            "code": "schema",
+            "path": "checks/1",
+            "message": "{'id': 'pc1_ping_pc0', 'type': 'ping', 'device': 'PC1', 'target': '192.168.1.1', 'expected': True, 'min_success_percent': 80} is not valid under any of the given schemas"
+          },
+          {
+            "code": "schema",
+            "path": "",
+            "message": "Additional properties are not allowed ('vlans' was unexpected)"
+          }
+        ],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T075742Z-generate-3e3e5288\\model-output.yaml"
+    },
+    {
+      "run": "20261014T080028Z-generate-f1114202",
+      "case": "01_ripv2",
+      "retry_of": "20261014T075558Z-generate-aaae04ff",
+      "first_attempt": false,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3759,
+        "completion_tokens": 5975,
+        "total_tokens": 9734,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 4385
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 3631
+      },
+      "prompt_sha256": "2ee0a4a3876ae17d950c8577dabcc2b1ea72ac8c5fff52e3ce369aef42d4e9e7",
+      "prompt_context_sha256": "4b22c9c89579e5bf59982297a1cec02daec19a2fde09393838e94b5e22510008",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": false,
+        "deployable": false,
+        "errors": [
+          {
+            "code": "trace_repeated_device",
+            "path": "pc0_trace_pc1",
+            "message": "正常无环路径重复经过 Router1；不能把同一设备的进出接口当作两跳"
+          }
+        ],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T080028Z-generate-f1114202\\model-output.yaml"
+    },
+    {
+      "run": "20261014T080146Z-generate-a7948a25",
+      "case": "02_ospf",
+      "retry_of": "20261014T075658Z-generate-37228e8f",
+      "first_attempt": false,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3828,
+        "completion_tokens": 6576,
+        "total_tokens": 10404,
+        "prompt_tokens_details": {
+          "cached_tokens": 3584
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 4771
+        },
+        "prompt_cache_hit_tokens": 3584,
+        "prompt_cache_miss_tokens": 244
+      },
+      "prompt_sha256": "2ee0a4a3876ae17d950c8577dabcc2b1ea72ac8c5fff52e3ce369aef42d4e9e7",
+      "prompt_context_sha256": "4b22c9c89579e5bf59982297a1cec02daec19a2fde09393838e94b5e22510008",
+      "validation_pass": true,
+      "intent_match": false,
+      "current_validation": {
+        "valid": false,
+        "deployable": false,
+        "errors": [
+          {
+            "code": "trace_repeated_device",
+            "path": "pc0_trace_pc1",
+            "message": "正常无环路径重复经过 Router2；不能把同一设备的进出接口当作两跳"
+          }
+        ],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T080146Z-generate-a7948a25\\model-output.yaml"
+    },
+    {
+      "run": "20261014T080225Z-generate-6c00f4c6",
+      "case": "03_lan",
+      "retry_of": "20261014T075742Z-generate-3e3e5288",
+      "first_attempt": false,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3617,
+        "completion_tokens": 1276,
+        "total_tokens": 4893,
+        "prompt_tokens_details": {
+          "cached_tokens": 3328
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 565
+        },
+        "prompt_cache_hit_tokens": 3328,
+        "prompt_cache_miss_tokens": 289
+      },
+      "prompt_sha256": "2ee0a4a3876ae17d950c8577dabcc2b1ea72ac8c5fff52e3ce369aef42d4e9e7",
+      "prompt_context_sha256": "4b22c9c89579e5bf59982297a1cec02daec19a2fde09393838e94b5e22510008",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": true,
+        "deployable": true,
+        "errors": [],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T080225Z-generate-6c00f4c6\\model-output.yaml"
+    },
+    {
+      "run": "20261014T080558Z-generate-db16e740",
+      "case": "02_ospf",
+      "retry_of": "20261014T080146Z-generate-a7948a25",
+      "first_attempt": false,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 5994,
+        "completion_tokens": 2739,
+        "total_tokens": 8733,
+        "prompt_tokens_details": {
+          "cached_tokens": 3712
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 942
+        },
+        "prompt_cache_hit_tokens": 3712,
+        "prompt_cache_miss_tokens": 2282
+      },
+      "prompt_sha256": "2ee0a4a3876ae17d950c8577dabcc2b1ea72ac8c5fff52e3ce369aef42d4e9e7",
+      "prompt_context_sha256": "0630b17e2f2ae590b967dc489f034570b0a3516d0ebf3235365a0830a780c31b",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": true,
+        "deployable": true,
+        "errors": [],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T080558Z-generate-db16e740\\model-output.yaml"
+    },
+    {
+      "run": "20261014T081332Z-generate-27cdc303",
+      "case": "06_http",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3606,
+        "completion_tokens": 1671,
+        "total_tokens": 5277,
+        "prompt_tokens_details": {
+          "cached_tokens": 3328
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 985
+        },
+        "prompt_cache_hit_tokens": 3328,
+        "prompt_cache_miss_tokens": 278
+      },
+      "prompt_sha256": "2ee0a4a3876ae17d950c8577dabcc2b1ea72ac8c5fff52e3ce369aef42d4e9e7",
+      "prompt_context_sha256": "0630b17e2f2ae590b967dc489f034570b0a3516d0ebf3235365a0830a780c31b",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": true,
+        "deployable": true,
+        "errors": [],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T081332Z-generate-27cdc303\\model-output.yaml"
+    },
+    {
+      "run": "20261014T081332Z-generate-f376e7e9",
+      "case": "04_vlsm",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3794,
+        "completion_tokens": 5126,
+        "total_tokens": 8920,
+        "prompt_tokens_details": {
+          "cached_tokens": 3328
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 3595
+        },
+        "prompt_cache_hit_tokens": 3328,
+        "prompt_cache_miss_tokens": 466
+      },
+      "prompt_sha256": "2ee0a4a3876ae17d950c8577dabcc2b1ea72ac8c5fff52e3ce369aef42d4e9e7",
+      "prompt_context_sha256": "0630b17e2f2ae590b967dc489f034570b0a3516d0ebf3235365a0830a780c31b",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": true,
+        "deployable": true,
+        "errors": [],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T081332Z-generate-f376e7e9\\model-output.yaml"
+    },
+    {
+      "run": "20261014T081334Z-generate-f93787cb",
+      "case": "05_acl",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3875,
+        "completion_tokens": 5807,
+        "total_tokens": 9682,
+        "prompt_tokens_details": {
+          "cached_tokens": 3328
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 3839
+        },
+        "prompt_cache_hit_tokens": 3328,
+        "prompt_cache_miss_tokens": 547
+      },
+      "prompt_sha256": "2ee0a4a3876ae17d950c8577dabcc2b1ea72ac8c5fff52e3ce369aef42d4e9e7",
+      "prompt_context_sha256": "0630b17e2f2ae590b967dc489f034570b0a3516d0ebf3235365a0830a780c31b",
+      "validation_pass": false,
+      "intent_match": null,
+      "current_validation": {
+        "valid": false,
+        "deployable": false,
+        "errors": [
+          {
+            "code": "schema",
+            "path": "devices/0/model",
+            "message": "2911 is not one of ['2911', '1941', '2960-24TT', '3560-24PS', 'PC-PT', 'Server-PT']"
+          },
+          {
+            "code": "schema",
+            "path": "devices/0/model",
+            "message": "2911 is not of type 'string'"
+          },
+          {
+            "code": "schema",
+            "path": "devices/1/model",
+            "message": "2911 is not one of ['2911', '1941', '2960-24TT', '3560-24PS', 'PC-PT', 'Server-PT']"
+          },
+          {
+            "code": "schema",
+            "path": "devices/1/model",
+            "message": "2911 is not of type 'string'"
+          }
+        ],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261014T081334Z-generate-f93787cb\\model-output.yaml"
+    },
+    {
+      "run": "20261015T003809Z-generate-d341dc1b",
+      "case": "07_vlan_router",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3925,
+        "completion_tokens": 5380,
+        "total_tokens": 9305,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 2674
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3925
+      },
+      "prompt_sha256": "c778ac2aa6ea07490f0b8e7cc05a9cb68ccd5144d0cbf1417fc6f0e5ae8f3c39",
+      "prompt_context_sha256": "9d1778b784388f94ad92e8c1ebebff7979745e361cc746d7e0a1b140c35232b5",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": true,
+        "deployable": true,
+        "errors": [],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261015T003809Z-generate-d341dc1b\\model-output.yaml"
+    },
+    {
+      "run": "20261015T003838Z-generate-74a0afd1",
+      "case": "08_vlan_svi",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3866,
+        "completion_tokens": 3640,
+        "total_tokens": 7506,
+        "prompt_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1009
+        },
+        "prompt_cache_hit_tokens": 3456,
+        "prompt_cache_miss_tokens": 410
+      },
+      "prompt_sha256": "c778ac2aa6ea07490f0b8e7cc05a9cb68ccd5144d0cbf1417fc6f0e5ae8f3c39",
+      "prompt_context_sha256": "9d1778b784388f94ad92e8c1ebebff7979745e361cc746d7e0a1b140c35232b5",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": true,
+        "deployable": true,
+        "errors": [],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261015T003838Z-generate-74a0afd1\\model-output.yaml"
+    },
+    {
+      "run": "20261015T003838Z-generate-8d79606a",
+      "case": "09_ripv1",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3924,
+        "completion_tokens": 8192,
+        "total_tokens": 12116,
+        "prompt_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 7276
+        },
+        "prompt_cache_hit_tokens": 3456,
+        "prompt_cache_miss_tokens": 468
+      },
+      "prompt_sha256": "c778ac2aa6ea07490f0b8e7cc05a9cb68ccd5144d0cbf1417fc6f0e5ae8f3c39",
+      "prompt_context_sha256": "9d1778b784388f94ad92e8c1ebebff7979745e361cc746d7e0a1b140c35232b5",
+      "validation_pass": false,
+      "intent_match": null,
+      "current_validation": null,
+      "pt_deployment": "not_run",
+      "raw_output": null
+    },
+    {
+      "run": "20261015T004007Z-generate-8071c273",
+      "case": "10_clarification",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3691,
+        "completion_tokens": 1478,
+        "total_tokens": 5169,
+        "prompt_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1036
+        },
+        "prompt_cache_hit_tokens": 3456,
+        "prompt_cache_miss_tokens": 235
+      },
+      "prompt_sha256": "c778ac2aa6ea07490f0b8e7cc05a9cb68ccd5144d0cbf1417fc6f0e5ae8f3c39",
+      "prompt_context_sha256": "9d1778b784388f94ad92e8c1ebebff7979745e361cc746d7e0a1b140c35232b5",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": true,
+        "deployable": false,
+        "errors": [],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261015T004007Z-generate-8071c273\\model-output.yaml"
+    },
+    {
+      "run": "20261015T004007Z-generate-ab3c8635",
+      "case": "05_acl",
+      "retry_of": "20261014T081334Z-generate-f93787cb",
+      "first_attempt": false,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 6299,
+        "completion_tokens": 2230,
+        "total_tokens": 8529,
+        "prompt_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 264
+        },
+        "prompt_cache_hit_tokens": 3456,
+        "prompt_cache_miss_tokens": 2843
+      },
+      "prompt_sha256": "c778ac2aa6ea07490f0b8e7cc05a9cb68ccd5144d0cbf1417fc6f0e5ae8f3c39",
+      "prompt_context_sha256": "9d1778b784388f94ad92e8c1ebebff7979745e361cc746d7e0a1b140c35232b5",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": true,
+        "deployable": true,
+        "errors": [],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261015T004007Z-generate-ab3c8635\\model-output.yaml"
+    },
+    {
+      "run": "20261015T004008Z-generate-00b606f5",
+      "case": "11_impossible",
+      "retry_of": null,
+      "first_attempt": true,
+      "api_completed": true,
+      "provider_error": false,
+      "model_response_received": true,
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 3693,
+        "completion_tokens": 858,
+        "total_tokens": 4551,
+        "prompt_tokens_details": {
+          "cached_tokens": 3456
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 564
+        },
+        "prompt_cache_hit_tokens": 3456,
+        "prompt_cache_miss_tokens": 237
+      },
+      "prompt_sha256": "c778ac2aa6ea07490f0b8e7cc05a9cb68ccd5144d0cbf1417fc6f0e5ae8f3c39",
+      "prompt_context_sha256": "9d1778b784388f94ad92e8c1ebebff7979745e361cc746d7e0a1b140c35232b5",
+      "validation_pass": true,
+      "intent_match": true,
+      "current_validation": {
+        "valid": true,
+        "deployable": false,
+        "errors": [],
+        "warnings": []
+      },
+      "pt_deployment": "not_run",
+      "raw_output": "runs\\20261015T004008Z-generate-00b606f5\\model-output.yaml"
+    },
+    {
+      "run": "20261015T004138Z-generate-11365b4c",
+      "case": "09_ripv1",
+      "retry_of": "20261015T003838Z-generate-8d79606a",
+      "first_attempt": false,
+      "api_completed": true,
+      "provider_error": true,
+      "model_response_received": false,
+      "model": null,
+      "usage": null,
+      "prompt_sha256": "c778ac2aa6ea07490f0b8e7cc05a9cb68ccd5144d0cbf1417fc6f0e5ae8f3c39",
+      "prompt_context_sha256": "9d1778b784388f94ad92e8c1ebebff7979745e361cc746d7e0a1b140c35232b5",
+      "validation_pass": false,
+      "intent_match": null,
+      "current_validation": null,
+      "pt_deployment": "not_run",
+      "raw_output": null
+    },
+    {
+      "run": "20261015T004138Z-generate-43708852",
+      "case": "01_ripv2",
+      "retry_of": "20261014T080028Z-generate-f1114202",
+      "first_attempt": false,
+      "api_completed": true,
+      "provider_error": true,
+      "model_response_received": false,
+      "model": null,
+      "usage": null,
+      "prompt_sha256": "c778ac2aa6ea07490f0b8e7cc05a9cb68ccd5144d0cbf1417fc6f0e5ae8f3c39",
+      "prompt_context_sha256": "9d1778b784388f94ad92e8c1ebebff7979745e361cc746d7e0a1b140c35232b5",
+      "validation_pass": false,
+      "intent_match": null,
+      "current_validation": null,
+      "pt_deployment": "not_run",
+      "raw_output": null
+    }
+  ]
+}

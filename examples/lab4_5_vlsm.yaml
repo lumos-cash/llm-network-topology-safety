@@ -1,0 +1,128 @@
+schema_version: '1.0'
+status: ready
+name: lab4_5_vlsm
+source: manual_reference
+intent: 实验4-5人工基线：四个不同长度子网加/30互联，静态路由；公网数字地址仅用于本地仿真。
+devices:
+- name: Router0
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 218.75.230.30/27
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 218.75.230.46/28
+  - name: GigabitEthernet0/2
+    mode: routed
+    ipv4: 218.75.230.81/30
+  static_routes:
+  - prefix: 218.75.230.48/28
+    next_hop: 218.75.230.82
+  - prefix: 218.75.230.64/28
+    next_hop: 218.75.230.82
+- name: Router1
+  kind: router
+  model: '2911'
+  interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ipv4: 218.75.230.78/28
+  - name: GigabitEthernet0/1
+    mode: routed
+    ipv4: 218.75.230.62/28
+  - name: GigabitEthernet0/2
+    mode: routed
+    ipv4: 218.75.230.82/30
+  static_routes:
+  - prefix: 218.75.230.0/27
+    next_hop: 218.75.230.81
+  - prefix: 218.75.230.32/28
+    next_hop: 218.75.230.81
+- name: PC0
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 218.75.230.1/27
+  gateway: 218.75.230.30
+- name: PC1
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 218.75.230.33/28
+  gateway: 218.75.230.46
+- name: PC2
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 218.75.230.49/28
+  gateway: 218.75.230.62
+- name: PC3
+  kind: pc
+  model: PC-PT
+  interfaces:
+  - name: FastEthernet0
+    mode: routed
+    ipv4: 218.75.230.65/28
+  gateway: 218.75.230.78
+links:
+- a:
+    device: PC0
+    interface: FastEthernet0
+  b:
+    device: Router0
+    interface: GigabitEthernet0/0
+  medium: copper
+- a:
+    device: PC1
+    interface: FastEthernet0
+  b:
+    device: Router0
+    interface: GigabitEthernet0/1
+  medium: copper
+- a:
+    device: PC2
+    interface: FastEthernet0
+  b:
+    device: Router1
+    interface: GigabitEthernet0/1
+  medium: copper
+- a:
+    device: PC3
+    interface: FastEthernet0
+  b:
+    device: Router1
+    interface: GigabitEthernet0/0
+  medium: copper
+- a:
+    device: Router0
+    interface: GigabitEthernet0/2
+  b:
+    device: Router1
+    interface: GigabitEthernet0/2
+  medium: copper
+checks:
+- id: pc0_pc2
+  type: ping
+  device: PC0
+  target: 218.75.230.49
+  expected: true
+- id: pc3_pc1
+  type: ping
+  device: PC3
+  target: 218.75.230.33
+  expected: true
+- id: r0_remote
+  type: route
+  device: Router0
+  prefix: 218.75.230.48/28
+  protocol: S
+  next_hops:
+  - 218.75.230.82

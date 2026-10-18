@@ -1,0 +1,83 @@
+enable
+configure terminal
+hostname {{ device.name }}
+{% if device.kind == 'l3_switch' %}
+ip routing
+{% endif %}
+{% for vlan in device.get('vlans', []) %}
+{% if vlan.id != 1 %}
+vlan {{ vlan.id }}
+name {{ vlan.name }}
+exit
+{% endif %}
+{% endfor %}
+{% for iface in device.interfaces %}
+interface {{ iface.name }}
+{% if iface.mode == 'routed' and device.kind == 'l3_switch' %}
+no switchport
+{% elif iface.mode == 'access' %}
+switchport mode access
+switchport access vlan {{ iface.vlan }}
+{% elif iface.mode == 'trunk' %}
+{% if device.model == '3560-24PS' %}
+switchport trunk encapsulation dot1q
+{% endif %}
+switchport mode trunk
+switchport trunk allowed vlan {{ iface.allowed_vlans | join(',') }}
+{% elif iface.mode == 'subinterface' %}
+encapsulation dot1Q {{ iface.vlan }}
+{% endif %}
+{% if iface.get('ipv4') %}
+ip address {{ iface.ipv4 | address }} {{ iface.ipv4 | netmask }}
+{% endif %}
+{% if iface.get('clock_rate') %}
+clock rate {{ iface.clock_rate }}
+{% endif %}
+{% if iface.get('ospf_cost') %}
+ip ospf cost {{ iface.ospf_cost }}
+{% endif %}
+{% if iface.get('enabled', true) %}
+no shutdown
+{% else %}
+shutdown
+{% endif %}
+exit
+{% endfor %}
+{% for route in device.get('static_routes', []) %}
+ip route {{ route.prefix | network }} {{ route.prefix | netmask }} {{ route.next_hop }}{% if route.get('distance') %} {{ route.distance }}{% endif %}
+
+{% endfor %}
+{% if device.get('routing', {}).get('rip') %}
+router rip
+version {{ device.routing.rip.version }}
+{% if device.routing.rip.auto_summary %}
+auto-summary
+{% else %}
+no auto-summary
+{% endif %}
+{% for prefix in device.routing.rip.networks | major_networks %}
+network {{ prefix }}
+{% endfor %}
+exit
+{% endif %}
+{% if device.get('routing', {}).get('ospf') %}
+router ospf {{ device.routing.ospf.process_id }}
+{% if device.routing.ospf.get('router_id') %}
+router-id {{ device.routing.ospf.router_id }}
+{% endif %}
+{% for n in device.routing.ospf.networks %}
+network {{ n.prefix | network }} {{ n.prefix | wildcard }} area {{ n.area }}
+{% endfor %}
+exit
+{% endif %}
+{% for acl in device.get('acls', []) %}
+{% for rule in acl.rules %}
+access-list {{ acl.number }} {{ rule.action }} {{ rule.protocol }} {{ rule.source | acl_address }} {{ rule.destination | acl_address }}{% if rule.get('destination_port') %} eq {{ rule.destination_port }}{% endif %}
+
+{% endfor %}
+interface {{ acl.interface }}
+ip access-group {{ acl.number }} {{ acl.direction }}
+exit
+{% endfor %}
+end
+

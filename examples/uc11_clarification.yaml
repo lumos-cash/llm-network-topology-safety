@@ -1,0 +1,9 @@
+schema_version: '1.0'
+status: needs_clarification
+name: uc11_clarification
+source: manual_reference
+intent: 二十多台机器分办公和测试两个网，需要上网和安全。
+questions:
+- 两个部门分别多少台机器？
+- 测试网能否访问办公网？有哪些必须开放的服务？
+- 模拟出口和可用地址段是什么？
